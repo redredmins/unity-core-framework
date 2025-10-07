@@ -5,8 +5,7 @@
     "description": "It's Red's template for unity projects.",
     "unity": "2022.1",
     "dependencies": {
-        "com.unity.some-package": "1.0.0",
-        "com.unity.other-package": "2.0.0"
+        "com.unity.2d.sprite": "1.0.0"
     },
     "keywords": [],
     "author": {
