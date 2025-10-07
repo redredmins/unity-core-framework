@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "displayName": "Red Core Framework",
     "description": "It's Red's template for unity projects.",
-    "unity": "6000.0.57f1",
+    "unity": "6000.2.6f2",
     "dependencies": {
         "com.unity.some-package": "1.0.0",
         "com.unity.other-package": "2.0.0"

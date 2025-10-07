@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 
-/*
 namespace RedMinS
 {
     public abstract class Singleton<T> where T : class, new()
@@ -55,7 +54,8 @@ namespace RedMinS
                             {
                                 GameObject obj = new GameObject($"[Singleton]{typeof(T).Name}");
                                 _instance = obj.AddComponent<T>();
-
+                                
+                                // DontDestroyOnLoad 적용
                                 if (Application.isPlaying)
                                 {
                                     DontDestroyOnLoad(obj);
@@ -105,4 +105,3 @@ namespace RedMinS
         }
     }
 }
-*/
