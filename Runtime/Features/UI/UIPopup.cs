@@ -2,19 +2,26 @@
 using UnityEngine.Events;
 using System.Collections;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
-    public class UIPopup : MonoBehaviour
+    public abstract class UIPopup : MonoBehaviour
     {
-        protected static UIManager _ui;
-        protected static StringTable _uiString = null;
+        //public bool dependScene = false;   // 씬에 고정으로 두면 체크
 
+        protected static UIManager _ui;
+        protected static StringTable _uiString;
+        protected static SoundManager _sound;
+
+
+        protected virtual void Awake()
+        {
+            _ui = Core.app.ui;
+            _uiString = Core.app.table.uiString;
+            _sound = Core.app.sound;
+        }
 
         protected virtual void OnEnable()
         {
-            _ui = Core.app.ui;
-            if (_uiString == null) _uiString = Core.app.table.uiString;
-            //if (_sound == null) _sound = Core.app.sound;
             _ui.OnPopup(this);
         }
 
@@ -23,7 +30,12 @@ namespace RedMinS.UI
             _ui.OffPopup(this);
         }
 
-        // (안드로이드) Back키
+        protected void PlayButtonSound()
+        {
+            _sound.PlayEffectSound("Button");
+        }
+
+        // Back키
         public virtual void OnBackKeyAction()
         {
             ClosePopup();

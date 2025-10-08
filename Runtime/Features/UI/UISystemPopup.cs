@@ -4,16 +4,16 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using TMPro;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     [System.Serializable]
     public class SystemPopupMessage
     {
         public string message = string.Empty;
-        public string okText = string.Empty;
-        public string cancelText = string.Empty;
-        public UnityAction okAction = null;
-        public UnityAction cancelAction = null;
+        public string yes = string.Empty;
+        public string no = string.Empty;
+        public UnityAction yesBtnAction = null;
+        public UnityAction noBtnAction = null;
     }
 
     public class UISystemPopup : UIPopup
@@ -32,16 +32,16 @@ namespace RedMinS.UI
         [SerializeField] TextMeshProUGUI labBtnTwoYes = null;
         [SerializeField] TextMeshProUGUI labBtnTwoNo = null;
 
-        UnityAction BackKeyAction = null;
+        UnityAction _backKeyAction = null;
 
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            // btnOne.onClick.AddListener(() => { PlayBtnSound(); });
-            // btnTwoYes.onClick.AddListener(() => { PlayBtnSound(); });
-            // btnTwoNo.onClick.AddListener(() => { PlayBtnSound(); });
+            btnOne.onClick.AddListener(PlayButtonSound);
+            btnTwoYes.onClick.AddListener(PlayButtonSound);
+            btnTwoNo.onClick.AddListener(PlayButtonSound);
         }
 
         protected override void OnDisable()
@@ -53,9 +53,6 @@ namespace RedMinS.UI
             oneBtnSet.SetActive(false);
             twoBtnSet.SetActive(false);
 
-            //_systemMessage = null;
-            //_checkList = null;
-
             base.OnDisable();
         }
 
@@ -63,16 +60,15 @@ namespace RedMinS.UI
         {
             //base.OnBackKeyAction();
 
-            if (BackKeyAction != null)
+            if (_backKeyAction != null)
             {
-                BackKeyAction();
+                _backKeyAction();
             }
             else
                 base.OnBackKeyAction();
         }
 
-        //SystemPopupMessage _systemMessage;
-        //List<string> _checkList;
+
         public void SetSystemPopup(SystemPopupMessage systemMessage, UnityAction<string, GameObject> removeSelf)
         {
             transform.localPosition = Vector3.zero;
@@ -81,48 +77,48 @@ namespace RedMinS.UI
             txtContent.text = systemMessage.message;
             UnityAction removeSelfAction = () => { removeSelf(systemMessage.message, this.gameObject); };
 
-            if (systemMessage.okText != string.Empty)
+            if (systemMessage.yes != string.Empty)
             {
-                if (systemMessage.cancelText != string.Empty) // --- yes, no 버튼 다 있으면
+                if (systemMessage.no != string.Empty) // --- yes, no 버튼 다 있으면
                 {
                     oneBtnSet.SetActive(false);
                     twoBtnSet.SetActive(true);
-                    labBtnTwoYes.text = systemMessage.okText;
-                    labBtnTwoNo.text = systemMessage.cancelText;
-                    if (systemMessage.okAction != null)
+                    labBtnTwoYes.text = systemMessage.yes;
+                    labBtnTwoNo.text = systemMessage.no;
+                    if (systemMessage.yesBtnAction != null)
                     {
-                        btnTwoYes.onClick.AddListener(systemMessage.okAction);
+                        btnTwoYes.onClick.AddListener(systemMessage.yesBtnAction);
                     }
                     btnTwoYes.onClick.AddListener(removeSelfAction);
-                    if (systemMessage.cancelAction != null)
+                    if (systemMessage.noBtnAction != null)
                     {
-                        btnTwoNo.onClick.AddListener(systemMessage.cancelAction);
-                        BackKeyAction = systemMessage.cancelAction;
+                        btnTwoNo.onClick.AddListener(systemMessage.noBtnAction);
+                        _backKeyAction = systemMessage.noBtnAction;
                     }
                     btnTwoNo.onClick.AddListener(removeSelfAction);
-                    BackKeyAction += removeSelfAction;
+                    _backKeyAction += removeSelfAction;
                 }
                 else        // --- yes 버튼 있으면
                 {
                     oneBtnSet.SetActive(true);
                     twoBtnSet.SetActive(false);
-                    labBtnOne.text = systemMessage.okText;
-                    if (systemMessage.okAction != null)
+                    labBtnOne.text = systemMessage.yes;
+                    if (systemMessage.yesBtnAction != null)
                     {
-                        btnOne.onClick.AddListener(systemMessage.okAction);
-                        BackKeyAction = systemMessage.okAction;
+                        btnOne.onClick.AddListener(systemMessage.yesBtnAction);
+                        _backKeyAction = systemMessage.yesBtnAction;
                     }
                     btnOne.onClick.AddListener(removeSelfAction);
-                    BackKeyAction += removeSelfAction;
+                    _backKeyAction += removeSelfAction;
                 }
             }
             else            // --- 메시지 확인만 가능
             {
                 oneBtnSet.SetActive(true);
                 twoBtnSet.SetActive(false);
-                labBtnOne.text = Core.app.table.uiString.GetString(3);
+                labBtnOne.text = Core.app.table.uiString.GetString(1001);
                 btnOne.onClick.AddListener(removeSelfAction);
-                BackKeyAction = removeSelfAction;
+                _backKeyAction = removeSelfAction;
             }
         }
     }

@@ -6,7 +6,6 @@ namespace RedMinS
     public abstract class Singleton<T> where T : class, new()
     {
         protected static T _instance = null;
-        private static readonly object _lock = new object();
 
         public static T Instance
         {
@@ -14,13 +13,7 @@ namespace RedMinS
             {
                 if (_instance == null)
                 {
-                    lock (_lock)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new T();
-                        }
-                    }
+                    _instance = new T();
                 }
                 return _instance;
             }
@@ -31,7 +24,6 @@ namespace RedMinS
     {
         protected static T _instance = null;
         protected static bool _applicationIsQuitting = false;
-        private static readonly object _lock = new object();
 
         public static T Instance
         {
@@ -45,26 +37,19 @@ namespace RedMinS
 
                 if (_instance == null)
                 {
-                    lock (_lock)
+                    _instance = FindAnyObjectByType<T>();
+                    if (_instance == null)
                     {
-                        if (_instance == null)
-                        {
-                            _instance = FindAnyObjectByType<T>();
-                            if (_instance == null)
-                            {
-                                GameObject obj = new GameObject($"[Singleton]{typeof(T).Name}");
-                                _instance = obj.AddComponent<T>();
+                        GameObject obj = new GameObject($"[Singleton]{typeof(T).Name}");
+                        _instance = obj.AddComponent<T>();
                                 
-                                // DontDestroyOnLoad 적용
-                                if (Application.isPlaying)
-                                {
-                                    DontDestroyOnLoad(obj);
-                                }
-                            }
+                        // DontDestroyOnLoad 적용
+                        if (Application.isPlaying)
+                        {
+                            DontDestroyOnLoad(obj);
                         }
                     }
                 }
-
                 return _instance;
             }
         }

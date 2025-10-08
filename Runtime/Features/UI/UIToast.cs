@@ -4,7 +4,7 @@ using System.Collections;
 using DG.Tweening;
 using TMPro;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     public class UIToast : MonoBehaviour
     {

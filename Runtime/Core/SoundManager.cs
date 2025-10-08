@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RedMinS
 {
-    public class SoundManager : MonoBehaviour //SingletonMonobehaviour<SoundManager>
+    public class SoundManager : SingletonMonobehaviour<SoundManager>
     {
         [SerializeField] AudioSource bgmAudio;
         [SerializeField] AudioSource[] soundAudios;
@@ -18,10 +18,11 @@ namespace RedMinS
         CoroutineOperator _corOper;
 
 
-        void Awake()
+        protected override void OnSingletonAwake()
         {
-            _corOper = new CoroutineOperator(this);
+            base.OnSingletonAwake();
 
+            _corOper = new CoroutineOperator(this);
             ChangeSoundVolume(PlayerPrefs.GetFloat(ConfigString.F_SoundVolume, 1f));
         }
 
@@ -35,6 +36,11 @@ namespace RedMinS
                 soundAudios[i].volume = volumeOfSound;
             }
             alertAudio.volume = volumeOfSound;
+        }
+
+        public void PlayEffectSound(string soundLabel)
+        {
+
         }
         
         public void PlayEffectSound(AudioClip sound)

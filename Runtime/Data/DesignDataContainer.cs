@@ -18,7 +18,6 @@ namespace RedMinS
     public class LocalizationTable
     {
         public Language language;
-        public TextAsset quest;
         public TextAsset uiString;
     }
 
