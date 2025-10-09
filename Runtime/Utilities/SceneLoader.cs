@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 
 namespace RedMinS
 {
+    public static partial class SceneLable
+    {
+        public const string TITLE = "Title";
+    }
+
     public class SceneLoader : MonoBehaviour
     {
-        public const string SCENE_TITLE = "TITLE";
-        public const string SCENE_MAIN = "MAIN";
-
         private string _curScene;
         public string CurSecne
         {
@@ -23,10 +25,10 @@ namespace RedMinS
 
         void Start()
         {
-            _curScene = SCENE_TITLE;
+            _curScene = SceneLable.TITLE;
             _reloadSceneAction = new Dictionary<string, UnityAction>();
 
-            SceneManager.LoadSceneAsync(SCENE_TITLE, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(SceneLable.TITLE, LoadSceneMode.Additive);
         }
 
         public void Load(string now, string toGo, UnityAction loadSceneAction = null)
