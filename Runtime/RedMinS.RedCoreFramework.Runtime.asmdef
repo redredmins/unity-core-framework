@@ -2,7 +2,8 @@
     "name": "RedMinS.RedCoreFramework.Runtime",
     "rootNamespace": "RedMinS.RedCoreFramework.Runtime",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:cae87aa96b0cc4ded9b6c9433460dd6b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -40,7 +40,7 @@ namespace RedMinS
 
         public StringTable uiString { private set; get; }
 
-        //[ShowOnly] public bool isLoaded = false;
+        [ShowOnly] public bool isLoaded = false;
 
 
         void Awake()
@@ -50,6 +50,8 @@ namespace RedMinS
             {
                 InitLanguage();
             }
+
+            LoadAllTable();
         }
 
         // 모든 테이블 불러오기
@@ -59,7 +61,7 @@ namespace RedMinS
             
             uiString = new StringTable(GetLocalizationTable(curLang).uiString);
             
-            //isLoaded = true;
+            isLoaded = true;
         }
 
         // 언어 바꾸기
