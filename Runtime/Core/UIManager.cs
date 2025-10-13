@@ -17,7 +17,7 @@ namespace RedMinS
         [SerializeField] protected Image fadeBoard;
         [SerializeField] protected Animation loadingSpinner;
 
-        
+
         [Header("- UI Prefabs")]
         [SerializeField] protected GameObject uiSystemPopup;
         [SerializeField] protected GameObject uiToast;
@@ -55,7 +55,7 @@ namespace RedMinS
             }
         }
 
-        
+
         // 시스템 경고 & 강제종료
         public void ShowSystemPopupAndQuit(string message, UnityAction action = null)
         {
@@ -66,7 +66,8 @@ namespace RedMinS
             Core.database.StopAllCoroutines();
 
             ShowSystemPopup(false, message,
-                () => {
+                () =>
+                {
                     if (action != null) action();
                     Application.Quit();
                 });
@@ -203,6 +204,14 @@ namespace RedMinS
             fadeBoard.color = new Color(screenColor.r, screenColor.g, screenColor.b, 0f);
             fadeAni.SetTrigger("FADE_OUT");
             yield return halfSec;
+        }
+
+        public void ShowLoadingSpinner(bool isShow)
+        {
+            if (loadingSpinner != null)
+            {
+                loadingSpinner.gameObject.SetActive(isShow);
+            }
         }
 
     }

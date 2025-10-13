@@ -6,13 +6,10 @@ using UnityEngine.SceneManagement;
 
 namespace RedMinS
 {
-    public static partial class SceneLable
-    {
-        public const string TITLE = "Title";
-    }
-
     public class SceneLoader : MonoBehaviour
     {
+        public const string TITLE = "Title";
+
         private string _curScene;
         public string CurSecne
         {
@@ -25,10 +22,10 @@ namespace RedMinS
 
         void Start()
         {
-            _curScene = SceneLable.TITLE;
+            _curScene = TITLE;
             _reloadSceneAction = new Dictionary<string, UnityAction>();
 
-            SceneManager.LoadSceneAsync(SceneLable.TITLE, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(TITLE, LoadSceneMode.Additive);
         }
 
         public void Load(string now, string toGo, UnityAction loadSceneAction = null)
@@ -53,7 +50,7 @@ namespace RedMinS
             }
 
             yield return ui.IEFadeOut(Color.black);
-            //ui.ShowLoadingSpinner(true);
+            ui.ShowLoadingSpinner(true);
 
             AsyncOperation async = null;
             SceneManager.UnloadSceneAsync(now);
@@ -67,7 +64,7 @@ namespace RedMinS
             }
 
             _curScene = toLoad;
-            //ui.ShowLoadingSpinner(false);
+            ui.ShowLoadingSpinner(false);
             yield return ui.IEFadeIn();
 
             if (_reloadSceneAction.ContainsKey(toLoad) == true)

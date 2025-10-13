@@ -17,6 +17,8 @@ namespace RedMinS
         [Header("Data Management")]
         [SerializeField] private DesignDataContainer _table;
         public DesignDataContainer table => GetOrCreateModule<DesignDataContainer>(ref _table);
+        [SerializeField] private UserData _user;
+        public UserData user => GetOrCreateModule<UserData>(ref _user);
 
         [Header("Sound Management")]
         [SerializeField] private SoundManager _sound;
@@ -37,6 +39,7 @@ namespace RedMinS
             _ = ui;
             _ = scene;
             _ = table;
+            _ = user;
             _ = sound;
             
             Debug.Log("[AppManager] All modules initialized successfully.");
