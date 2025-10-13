@@ -19,13 +19,14 @@ namespace RedMinS
 
         protected void Start()
         {
-            SupportResolution(canvas);
+            //SupportResolution(canvas);
 
-        #if (!UNITY_EDITOR) && (UNITY_ANDROID || UNITY_IPHONE)
-            EventSystem.current.pixelDragThreshold = (int)(0.5f * Screen.dpi / 2.54f); // 0.5cm
-        #endif
+        //#if (!UNITY_EDITOR) && (UNITY_ANDROID || UNITY_IPHONE)
+            //EventSystem.current.pixelDragThreshold = (int)(0.5f * Screen.dpi / 2.54f); // 0.5cm
+        //#endif
         }
 
+        /*
         protected void Update()
         {
             // 안드로이드 Back키
@@ -42,38 +43,41 @@ namespace RedMinS
                 }
             }
         }
+        */
 
+/*
         public void SupportResolution(Canvas canv, GameObject gameSceneObj = null)
         {
             CanvasScaler cs = canv.GetComponent<CanvasScaler>();
 
-        #if UNITY_ANDROID || UNITY_IPHONE
+#if UNITY_ANDROID || UNITY_IPHONE
             float ratioChk = canv.pixelRect.width / canv.pixelRect.height;
             if (ratioChk <= 0.5f) // 모바일 세로가 긴 해상도라면
             {
-            #if UNITY_ANDROID
+#if UNITY_ANDROID
                 cs.referenceResolution = MOBILE_RATIO_SCREEN;
                 cs.matchWidthOrHeight = 1f;
                 if (gameSceneObj != null)
                 {
                     gameSceneObj.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
                 }
-            #elif UNITY_IPHONE
+#elif UNITY_IPHONE
                 cs.referenceResolution = MOBILE_RATIO_SCREEN;
                 cs.matchWidthOrHeight = 1f;
                 if (gameSceneObj != null)
                 {
                     gameSceneObj.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
                 }
-            #endif
+#endif
             }
             else // 모바일 일반 해상도
             {
                 cs.referenceResolution = MOBILE_RATIO_SCREEN;
                 cs.matchWidthOrHeight = 1f;
             }
-        #endif
+#endif
         }
+        */
 
         void AskExitGame()
         {
