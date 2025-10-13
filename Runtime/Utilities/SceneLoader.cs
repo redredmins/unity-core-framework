@@ -8,7 +8,7 @@ namespace RedMinS
 {
     public class SceneLoader : MonoBehaviour
     {
-        public const string TITLE = "Title";
+        public static string TITLE = "Title";
 
         private string _curScene;
         public string CurSecne
