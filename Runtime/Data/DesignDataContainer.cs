@@ -40,7 +40,8 @@ namespace RedMinS
 
         public StringTable uiString { private set; get; }
 
-        [ShowOnly] public bool isLoaded = false;
+        //[ShowOnly]
+        public bool isLoaded = false;
 
 
         void Awake()
