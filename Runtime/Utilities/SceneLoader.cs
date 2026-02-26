@@ -28,32 +28,31 @@ namespace RedMinS
             SceneManager.LoadSceneAsync(TITLE, LoadSceneMode.Additive);
         }
 
-        public void Load(string now, string toGo, UnityAction loadSceneAction = null)
+        public void Load(string toGo, UnityAction loadSceneAction = null)
         {
             if (_isLoading == false)
             {
-                StartCoroutine(IELoadScene(now, toGo, loadSceneAction));
+                StartCoroutine(IELoadScene(toGo, loadSceneAction));
                 //analytics.SetScene(toGo);
             }
         }
 
         WaitForSeconds halfSec = new WaitForSeconds(0.5f);
-        IEnumerator IELoadScene(string now, string toLoad, UnityAction reloadSceneAction)
+        IEnumerator IELoadScene(string toLoad, UnityAction reloadSceneAction)
         {
             var ui = Core.app.ui;
-            //Debug.Log(now + " -> " + toLoad);
 
             _isLoading = true;
             if (reloadSceneAction != null)
             {
-                _reloadSceneAction.Add(now, reloadSceneAction);
+                _reloadSceneAction.Add(_curScene, reloadSceneAction);
             }
 
             yield return ui.IEFadeOut(Color.black);
             ui.ShowLoadingSpinner(true);
 
             AsyncOperation async = null;
-            SceneManager.UnloadSceneAsync(now);
+            SceneManager.UnloadSceneAsync(_curScene);
             yield return halfSec;
 
             async = SceneManager.LoadSceneAsync(toLoad, LoadSceneMode.Additive);

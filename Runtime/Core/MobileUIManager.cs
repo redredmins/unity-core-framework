@@ -1,18 +1,41 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 
 namespace RedMinS
 {
+    public enum BaseScreenRatio
+    {
+        HD, // 720 x 1280
+        FullHD, // 1080 x 1920
+        MobileHD, // 720 x 1600
+        MobileFHD, // 1080 x 2400
+    }
+
     public class MobileUIManager : UIManager
     {
         // [SerializeField] TextMeshProUGUI txtLoadingMessage;
         // [SerializeField] GameObject efcClick;
 
-        readonly Vector2 MOBILE_RATIO_SCREEN = new Vector2(1080f, 1920f);
+        [SerializeField] BaseScreenRatio baseScreenRatio;
+        Vector2 MOBILE_RATIO_SCREEN
+        {
+            get
+            {
+                switch (baseScreenRatio)
+                {
+                    default:
+                    case BaseScreenRatio.HD: return new Vector2(720f, 1280f);
+                    case BaseScreenRatio.FullHD: return new Vector2(1080f, 1920f);
+                    case BaseScreenRatio.MobileHD: return new Vector2(720f, 1600f);
+                    case BaseScreenRatio.MobileFHD: return new Vector2(1080f, 2400f);
+                }
+            }
+        }
 
         public bool IsPopupActive => _activePopups.Count > 0;
 
@@ -21,61 +44,56 @@ namespace RedMinS
         {
             //SupportResolution(canvas);
 
-        //#if (!UNITY_EDITOR) && (UNITY_ANDROID || UNITY_IPHONE)
-            //EventSystem.current.pixelDragThreshold = (int)(0.5f * Screen.dpi / 2.54f); // 0.5cm
-        //#endif
+        #if (!UNITY_EDITOR) && (UNITY_ANDROID || UNITY_IPHONE)
+            EventSystem.current.pixelDragThreshold = (int)(0.5f * Screen.dpi / 2.54f); // 0.5cm
+        #endif
         }
 
-        /*
-        protected void Update()
+        public void OnBackButtonPressed()
         {
-            // 안드로이드 Back키
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (IsPopupActive)
             {
-                if (IsPopupActive)
-                {
-                    int last = _activePopups.Count - 1;
-                    _activePopups[last].OnBackKeyAction();
-                }
-                else
-                {
-                    AskExitGame();
-                }
+                int last = _activePopups.Count - 1;
+                _activePopups[last].OnBackKeyAction();
+            }
+            else
+            {
+                AskExitGame();
             }
         }
-        */
+        
 
-/*
+        /*
         public void SupportResolution(Canvas canv, GameObject gameSceneObj = null)
         {
             CanvasScaler cs = canv.GetComponent<CanvasScaler>();
 
-#if UNITY_ANDROID || UNITY_IPHONE
+        #if UNITY_ANDROID || UNITY_IPHONE
             float ratioChk = canv.pixelRect.width / canv.pixelRect.height;
             if (ratioChk <= 0.5f) // 모바일 세로가 긴 해상도라면
             {
-#if UNITY_ANDROID
+            #if UNITY_ANDROID
                 cs.referenceResolution = MOBILE_RATIO_SCREEN;
                 cs.matchWidthOrHeight = 1f;
                 if (gameSceneObj != null)
                 {
                     gameSceneObj.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
                 }
-#elif UNITY_IPHONE
+            #elif UNITY_IPHONE
                 cs.referenceResolution = MOBILE_RATIO_SCREEN;
                 cs.matchWidthOrHeight = 1f;
                 if (gameSceneObj != null)
                 {
                     gameSceneObj.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
                 }
-#endif
+            #endif
             }
             else // 모바일 일반 해상도
             {
                 cs.referenceResolution = MOBILE_RATIO_SCREEN;
                 cs.matchWidthOrHeight = 1f;
             }
-#endif
+        #endif
         }
         */
 
