@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     public class UIImageRadioButton : UIRadioButton
     {

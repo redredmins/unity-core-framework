@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -8,8 +6,10 @@ namespace RedMinS
     public class DatabaseManager : SingletonMonobehaviour<DatabaseManager>
     {
         [Header("Database Settings")]
-        [SerializeField] private bool enableLocalStorage = true;
         [SerializeField] private bool enableCloudSync = false;
+
+        private IDataStore _dataStore;
+        public IDataStore DataStore => _dataStore;
 
         public event Action OnDataLoaded;
         public event Action OnDataSaved;
@@ -22,18 +22,24 @@ namespace RedMinS
 
         private void InitializeDatabase()
         {
-            Debug.Log("[DatabaseManager] Initializing database system...");
-            // 데이터베이스 초기화 로직
+            _dataStore = new LocalDataStore();
+            Debug.Log("[DatabaseManager] Initialized with LocalDataStore.");
+        }
+
+        /// <summary>
+        /// 데이터 저장소를 교체합니다. (예: Firebase 전환 시 사용)
+        /// </summary>
+        public void SetDataStore(IDataStore dataStore)
+        {
+            _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
+            Debug.Log($"[DatabaseManager] DataStore changed to {dataStore.GetType().Name}.");
         }
 
         public void SaveData<T>(string key, T data) where T : class
         {
             try
             {
-                string jsonData = JsonUtility.ToJson(data);
-                PlayerPrefs.SetString(key, jsonData);
-                PlayerPrefs.Save();
-                
+                _dataStore.Save(key, data);
                 Debug.Log($"[DatabaseManager] Data saved: {key}");
                 OnDataSaved?.Invoke();
             }
@@ -47,40 +53,36 @@ namespace RedMinS
         {
             try
             {
-                string jsonData = PlayerPrefs.GetString(key, string.Empty);
-                if (!string.IsNullOrEmpty(jsonData))
+                T data = _dataStore.Load<T>(key);
+                if (data != null)
                 {
-                    T data = JsonUtility.FromJson<T>(jsonData);
                     Debug.Log($"[DatabaseManager] Data loaded: {key}");
                     OnDataLoaded?.Invoke();
-                    return data;
                 }
+                return data;
             }
             catch (Exception e)
             {
                 Debug.LogError($"[DatabaseManager] Load failed: {e.Message}");
+                return null;
             }
-            
-            return null;
         }
 
         public bool HasData(string key)
         {
-            return PlayerPrefs.HasKey(key);
+            return _dataStore.HasKey(key);
         }
 
         public void DeleteData(string key)
         {
-            PlayerPrefs.DeleteKey(key);
-            PlayerPrefs.Save();
+            _dataStore.Delete(key);
             Debug.Log($"[DatabaseManager] Data deleted: {key}");
         }
 
         public void ClearAllData()
         {
-            PlayerPrefs.DeleteAll();
-            PlayerPrefs.Save();
-            Debug.Log("[DatabaseManager] All data cleared");
+            _dataStore.DeleteAll();
+            Debug.Log("[DatabaseManager] All data cleared.");
         }
     }
 }

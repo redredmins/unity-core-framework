@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using System;
 
 namespace RedMinS
 {
@@ -28,29 +28,39 @@ namespace RedMinS
 
         private IEnumerator SendRequestCoroutine<T>(string url, Action<T> onSuccess, Action<string> onError) where T : class
         {
-            using (UnityWebRequest request = UnityWebRequest.Get(url))
-            {
-                request.timeout = (int)timeoutDuration;
-                
-                yield return request.SendWebRequest();
+            string lastError = null;
 
-                if (request.result == UnityWebRequest.Result.Success)
+            for (int attempt = 0; attempt < maxRetryCount; attempt++)
+            {
+                using (UnityWebRequest request = UnityWebRequest.Get(url))
                 {
-                    try
+                    request.timeout = (int)timeoutDuration;
+
+                    yield return request.SendWebRequest();
+
+                    if (request.result == UnityWebRequest.Result.Success)
                     {
-                        T result = JsonUtility.FromJson<T>(request.downloadHandler.text);
-                        onSuccess?.Invoke(result);
+                        try
+                        {
+                            T result = JsonUtility.FromJson<T>(request.downloadHandler.text);
+                            onSuccess?.Invoke(result);
+                        }
+                        catch (Exception e)
+                        {
+                            onError?.Invoke($"JSON Parse Error: {e.Message}");
+                        }
+                        yield break;
                     }
-                    catch (Exception e)
-                    {
-                        onError?.Invoke($"JSON Parse Error: {e.Message}");
-                    }
+
+                    lastError = request.error;
+                    Debug.LogWarning($"[NetworkManager] Request failed (attempt {attempt + 1}/{maxRetryCount}): {lastError}");
                 }
-                else
-                {
-                    onError?.Invoke($"Network Error: {request.error}");
-                }
+
+                if (attempt < maxRetryCount - 1)
+                    yield return new WaitForSeconds(1f);
             }
+
+            onError?.Invoke($"Network Error: {lastError}");
         }
 
         public void CheckNetworkConnection()

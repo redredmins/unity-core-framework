@@ -5,18 +5,18 @@ namespace RedMinS
 {
     public class ObjectPool //: MonoBehaviour
     {
-        Dictionary<string, List<GameObject>> _objPools = null;
+        Dictionary<string, Queue<GameObject>> _objPools = null;
 
 
         public ObjectPool()
         {
-            _objPools = new Dictionary<string, List<GameObject>>();
+            _objPools = new Dictionary<string, Queue<GameObject>>();
         }
 
-        // 
-        void MakePool(GameObject prefab)
+        //
+        void MakePool(string key)
         {
-            _objPools.Add(prefab.name, new List<GameObject>());
+            _objPools.Add(key, new Queue<GameObject>());
         }
 
         GameObject MakeObject(GameObject prefab, Transform parent)
@@ -33,25 +33,21 @@ namespace RedMinS
             if (prefab == null) return null;
 
             string objName = prefab.name;
-            if (_objPools.ContainsKey(objName) == false)
+            if (!_objPools.ContainsKey(objName))
             {
-                MakePool(prefab);
+                MakePool(objName);
             }
 
             GameObject obj = null;
             if (_objPools[objName].Count > 0)
             {
-                obj = _objPools[objName][0];
-                _objPools[objName].Remove(obj);
+                obj = _objPools[objName].Dequeue();
                 obj.transform.SetParent(parent);
                 obj.SetActive(true);
-
-                //Debug.Log("CreateObject - re", obj);
             }
             else
             {
                 obj = MakeObject(prefab, parent);
-                //Debug.Log("CreateObject - new", obj);
             }
 
             obj.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -62,11 +58,14 @@ namespace RedMinS
         // 오브젝트풀에 다시 넣어둠
         public void RemoveObject(GameObject obj)
         {
-            //Debug.Log(obj.name);
             obj.SetActive(false);
-            //obj.transform.SetParent(this.transform);
-            _objPools[obj.name].Add(obj);
-            //Debug.Log("RemoveObject", obj);
+
+            if (!_objPools.ContainsKey(obj.name))
+            {
+                MakePool(obj.name);
+            }
+
+            _objPools[obj.name].Enqueue(obj);
         }
 
         // 풀의 오브젝트 모두 제거
@@ -74,11 +73,9 @@ namespace RedMinS
         {
             foreach (var objs in _objPools)
             {
-                //AnalyticsManager.DebugLog(this.transform.name + " => 오브젝트풀 : 풀의 모든 오브젝트 제거");
-                int numObjs = objs.Value.Count - 1;
-                for (int i = numObjs; i >= 0; --i)
+                foreach (var obj in objs.Value)
                 {
-                    Object.Destroy(objs.Value[i].gameObject);
+                    Object.Destroy(obj.gameObject);
                 }
             }
 

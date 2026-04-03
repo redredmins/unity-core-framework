@@ -35,15 +35,6 @@ namespace RedMinS
         UnityAction _backKeyAction = null;
 
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            btnOne.onClick.AddListener(PlayButtonSound);
-            btnTwoYes.onClick.AddListener(PlayButtonSound);
-            btnTwoNo.onClick.AddListener(PlayButtonSound);
-        }
-
         protected override void OnDisable()
         {
             btnOne.onClick.RemoveAllListeners();
@@ -71,6 +62,15 @@ namespace RedMinS
 
         public void SetSystemPopup(SystemPopupMessage systemMessage, UnityAction<string, GameObject> removeSelf)
         {
+            // 기존 리스너 정리 후 기본 사운드만 재등록
+            btnOne.onClick.RemoveAllListeners();
+            btnTwoYes.onClick.RemoveAllListeners();
+            btnTwoNo.onClick.RemoveAllListeners();
+            btnOne.onClick.AddListener(PlayButtonSound);
+            btnTwoYes.onClick.AddListener(PlayButtonSound);
+            btnTwoNo.onClick.AddListener(PlayButtonSound);
+            _backKeyAction = null;
+
             transform.localPosition = Vector3.zero;
             transform.localScale = new Vector3(1f, 1f, 1f);
 

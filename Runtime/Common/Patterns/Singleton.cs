@@ -42,12 +42,7 @@ namespace RedMinS
                     {
                         GameObject obj = new GameObject($"[Singleton]{typeof(T).Name}");
                         _instance = obj.AddComponent<T>();
-                                
-                        // DontDestroyOnLoad 적용
-                        if (Application.isPlaying)
-                        {
-                            DontDestroyOnLoad(obj);
-                        }
+                        // Awake()에서 DontDestroyOnLoad 처리
                     }
                 }
                 return _instance;
@@ -58,20 +53,21 @@ namespace RedMinS
 
         protected virtual void Awake()
         {
-            if (_instance == null)
-            {
-                _instance = this as T;
-                if (Application.isPlaying)
-                {
-                    DontDestroyOnLoad(gameObject);
-                }
-                OnSingletonAwake();
-            }
-            else if (_instance != this)
+            if (_instance != null && _instance != this)
             {
                 Debug.LogWarning($"[Singleton] Duplicate instance of {typeof(T)} found. Destroying.");
                 Destroy(gameObject);
+                return;
             }
+
+            _instance = this as T;
+
+            if (Application.isPlaying)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+
+            OnSingletonAwake();
         }
 
         protected virtual void OnSingletonAwake() { }

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using DG.Tweening;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     //[Serializable]
     public class UISwipePaging : MonoBehaviour

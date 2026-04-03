@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     public class UITabMenu : MonoBehaviour
     {

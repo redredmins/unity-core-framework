@@ -11,7 +11,7 @@ namespace RedMinS
         public static string TITLE = "Title";
 
         private string _curScene;
-        public string CurSecne
+        public string CurScene
         {
             get { return _curScene; }
         }
@@ -66,9 +66,9 @@ namespace RedMinS
             ui.ShowLoadingSpinner(false);
             yield return ui.IEFadeIn();
 
-            if (_reloadSceneAction.ContainsKey(toLoad) == true)
+            if (_reloadSceneAction.TryGetValue(toLoad, out var action))
             {
-                _reloadSceneAction[toLoad]();
+                action();
                 _reloadSceneAction.Remove(toLoad);
             }
 

@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace RedMinS
 {
-
     [Serializable]
     public abstract class Data
     {

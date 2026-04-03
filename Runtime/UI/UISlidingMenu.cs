@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     public class UISlidingMenu : MonoBehaviour
     {

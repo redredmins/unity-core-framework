@@ -44,9 +44,9 @@ namespace RedMinS
         //
         public string GetString(int uid)
         {
-            if (stringTable.ContainsKey(uid))
+            if (stringTable.TryGetValue(uid, out var value))
             {
-                return stringTable[uid];
+                return value;
             }
             else
                 return "-";

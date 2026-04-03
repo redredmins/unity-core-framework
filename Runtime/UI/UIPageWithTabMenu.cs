@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using RedMinS;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     public abstract class UIPopupWithTabMenu : UIPopup
     {

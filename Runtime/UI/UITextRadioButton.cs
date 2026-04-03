@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using System;
 using TMPro;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     //[RequireComponent (typeof (Button))]
     public class UITextRadioButton : UIRadioButton

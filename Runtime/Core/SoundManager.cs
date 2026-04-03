@@ -1,5 +1,3 @@
-﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,30 +5,35 @@ namespace RedMinS
 {
     public class SoundManager : SingletonMonobehaviour<SoundManager>
     {
+        [Header("Audio Sources")]
         [SerializeField] AudioSource bgmAudio;
         [SerializeField] AudioSource[] soundAudios;
         [SerializeField] AudioSource alertAudio;
 
-        
         public float volumeOfSound { private set; get; }
         AudioClip _curBgm = null;
 
-        CoroutineOperator _corOper;
+        Dictionary<string, AudioClip> _clipRegistry;
 
 
         protected override void OnSingletonAwake()
         {
             base.OnSingletonAwake();
 
-            _corOper = new CoroutineOperator(this);
+            _clipRegistry = new Dictionary<string, AudioClip>();
             ChangeSoundVolume(PlayerPrefs.GetFloat(ConfigString.F_SoundVolume, 1f));
+        }
+
+        public void RegisterClip(string label, AudioClip clip)
+        {
+            _clipRegistry[label] = clip;
         }
 
         public void ChangeSoundVolume(float volume)
         {
             volumeOfSound = volume;
             PlayerPrefs.SetFloat(ConfigString.F_SoundVolume, volumeOfSound);
-            
+
             for (int i = 0; i < soundAudios.Length; ++i)
             {
                 soundAudios[i].volume = volumeOfSound;
@@ -38,40 +41,43 @@ namespace RedMinS
             alertAudio.volume = volumeOfSound;
         }
 
-        public void PlayEffectSound(string soundLabel)
+        public void PlayEffectSound(string label)
         {
+            if (!_clipRegistry.TryGetValue(label, out var clip))
+            {
+                Debug.LogWarning($"[SoundManager] Sound not found: {label}");
+                return;
+            }
 
+            PlayEffectSound(clip);
         }
-        
-        public void PlayEffectSound(AudioClip sound)
+
+        public void PlayEffectSound(AudioClip clip)
         {
             AudioSource audio = GetEmptySoundAudio();
-            audio.clip = sound;
+            audio.clip = clip;
             audio.Play();
         }
 
-        //비어있는 오디오 소스 반환
         AudioSource GetEmptySoundAudio()
         {
-            int lageindex = 0;
-            float lageProgress = 0;
+            int largestIndex = 0;
+            float largestProgress = 0;
             for (int i = 0; i < soundAudios.Length; i++)
             {
-                if (soundAudios[i].isPlaying == false)
+                if (!soundAudios[i].isPlaying)
                 {
                     return soundAudios[i];
                 }
 
-                // 만약 비어있는 오디오 소스 없으면 가장 진행도가 높은 오디오 소스 반환
                 float progress = soundAudios[i].time / soundAudios[i].clip.length;
-                if (progress > lageProgress)
+                if (progress > largestProgress)
                 {
-                    lageindex = i;
-                    lageProgress = progress;
+                    largestIndex = i;
+                    largestProgress = progress;
                 }
             }
-            return soundAudios[lageindex];
+            return soundAudios[largestIndex];
         }
-
     }
 }

@@ -2,18 +2,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     public class UIPageList : MonoBehaviour
     {
         public delegate void PageHandler();
         PageHandler ChangePage;
 
-        public delegate RectTransform SlotHandler(int slotIndex);
-        SlotHandler SetSlot;
+        public delegate RectTransform ListItemHandler(int listItemIndex);
+        ListItemHandler SetListItem;
 
-        //[SerializeField] Transform slotParent;    // 슬롯 Parent
-        public Transform SlotParent
+        //[SerializeField] Transform listItemParent;    // 리스트아이템 Parent
+        public Transform ListItemParent
         {
             get { return transform; }
         }
@@ -26,24 +26,24 @@ namespace RedMinS.UI
         //[Header("- page")]
         [SerializeField] Text txtPage;
 
-        int allSlot;        // 총 슬롯 갯수
-        int slotPerPage;    // 한 페이지의 슬롯 수
+        int allListItem;        // 총 리스트아이템 갯수
+        int listItemPerPage;    // 한 페이지의 리스트아이템 수
         int curPage = 0;    // 지금 페이지 인덱스
         int lastPage = 0;   // 마지막 페이지 인덱스
         int maxPage = 0;    // 총 페이지 수
 
 
-        public void InitList(int allSlot, PageHandler pageHandler, SlotHandler slotHandler)
+        public void InitList(int allListItem, PageHandler pageHandler, ListItemHandler listItemHandler)
         {
-            this.allSlot = allSlot;
-            slotPerPage = row * column;
+            this.allListItem = allListItem;
+            listItemPerPage = row * column;
 
             curPage = 0;
-            maxPage = (int)Math.Ceiling((decimal)allSlot / (decimal)slotPerPage);
+            maxPage = (int)Math.Ceiling((decimal)allListItem / (decimal)listItemPerPage);
             lastPage = maxPage - 1;
             ChangePage = pageHandler;
 
-            SetSlot = slotHandler;
+            SetListItem = listItemHandler;
             SetPage(curPage);
         }
 
@@ -55,13 +55,13 @@ namespace RedMinS.UI
 
             ChangePage();
 
-            int firstIndex = page * slotPerPage;
-            int firstIndexInNextPage = (page + 1) * slotPerPage;
+            int firstIndex = page * listItemPerPage;
+            int firstIndexInNextPage = (page + 1) * listItemPerPage;
             for (int i = firstIndex; i < firstIndexInNextPage; ++i)
             {
-                if (i < allSlot)
+                if (i < allListItem)
                 {
-                    RectTransform rect = SetSlot(i);
+                    RectTransform rect = SetListItem(i);
                     //rect.SetParent(listObj.transform);
                     rect.localEulerAngles = new Vector3(0f, 0f, 0f);
                     rect.localScale = new Vector3(1f, 1f, 1f);

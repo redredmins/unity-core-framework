@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RedMinS.Tool
+namespace RedMinS
 {
     public class DestroySelf : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RedMinS.RedCoreFramework.Runtime
+namespace RedMinS
 {
     public class QuestData : MonoBehaviour
     {

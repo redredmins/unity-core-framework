@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     public class UIImageText : MonoBehaviour
     {

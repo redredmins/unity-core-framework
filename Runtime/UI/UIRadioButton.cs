@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-namespace RedMinS.UI
+namespace RedMinS
 {
     [Serializable]
     public abstract class UIRadioButton : MonoBehaviour
