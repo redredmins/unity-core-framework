@@ -24,6 +24,10 @@ namespace RedMinS
         [SerializeField] private SoundManager _sound;
         public SoundManager sound => GetOrCreateModule<SoundManager>(ref _sound);
 
+        [Header("Time Management")]
+        [SerializeField] private TimeService _time;
+        public TimeService time => GetOrCreateModule<TimeService>(ref _time);
+
 
         protected override void OnSingletonAwake()
         {
@@ -41,6 +45,7 @@ namespace RedMinS
             _ = table;
             _ = user;
             _ = sound;
+            _ = time;
             
             Debug.Log("[AppManager] All modules initialized successfully.");
         }
