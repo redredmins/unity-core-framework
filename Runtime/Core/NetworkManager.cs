@@ -1,16 +1,32 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace RedMinS
 {
+    public enum NetworkPolicy
+    {
+        AlwaysRequired,   // 네트워크 끊기면 앱 종료 (재화 관리 게임용)
+        RequiredForSync,  // 끊기면 쓰기 차단, 읽기는 캐시 허용
+        Optional          // 오프라인 허용 (싱글플레이 게임용)
+    }
+
     public class NetworkManager : SingletonMonobehaviour<NetworkManager>
     {
         [Header("Network Settings")]
         [SerializeField] private float timeoutDuration = 10f;
         [SerializeField] private int maxRetryCount = 3;
+
+        [Header("Network Policy")]
+        [SerializeField] private NetworkPolicy networkPolicy = NetworkPolicy.AlwaysRequired;
+        [SerializeField] private float connectionCheckInterval = 5f;
+
+        private bool _isConnected = true;
+        private Coroutine _connectionCheckCoroutine;
+
+        public NetworkPolicy Policy => networkPolicy;
+        public bool IsConnected => _isConnected;
 
         public event Action OnNetworkConnected;
         public event Action OnNetworkDisconnected;
@@ -18,7 +34,82 @@ namespace RedMinS
         protected override void OnSingletonAwake()
         {
             base.OnSingletonAwake();
-            // 네트워크 초기화 로직
+        }
+
+        /// <summary>
+        /// 네트워크 연결 감시를 시작합니다. 앱 초기화 후 호출하세요.
+        /// </summary>
+        public void StartConnectionMonitor()
+        {
+            if (_connectionCheckCoroutine != null)
+                StopCoroutine(_connectionCheckCoroutine);
+
+            _connectionCheckCoroutine = StartCoroutine(ConnectionMonitorCoroutine());
+        }
+
+        public void StopConnectionMonitor()
+        {
+            if (_connectionCheckCoroutine != null)
+            {
+                StopCoroutine(_connectionCheckCoroutine);
+                _connectionCheckCoroutine = null;
+            }
+        }
+
+        private IEnumerator ConnectionMonitorCoroutine()
+        {
+            var wait = new WaitForSeconds(connectionCheckInterval);
+
+            while (true)
+            {
+                bool wasConnected = _isConnected;
+                _isConnected = Application.internetReachability != NetworkReachability.NotReachable;
+
+                if (wasConnected && !_isConnected)
+                {
+                    OnNetworkDisconnected?.Invoke();
+                    HandleDisconnection();
+                }
+                else if (!wasConnected && _isConnected)
+                {
+                    OnNetworkConnected?.Invoke();
+                }
+
+                yield return wait;
+            }
+        }
+
+        private void HandleDisconnection()
+        {
+            switch (networkPolicy)
+            {
+                case NetworkPolicy.AlwaysRequired:
+                    Debug.LogError("[NetworkManager] Network lost. Policy: AlwaysRequired - Quitting application.");
+                    Core.app.ui.ShowSystemPopup(true,
+                        "Network Error",
+                        "Network connection lost. The app will close.",
+                        () => Application.Quit()
+                    );
+                    break;
+
+                case NetworkPolicy.RequiredForSync:
+                    Debug.LogWarning("[NetworkManager] Network lost. Policy: RequiredForSync - Cloud sync disabled.");
+                    break;
+
+                case NetworkPolicy.Optional:
+                    Debug.Log("[NetworkManager] Network lost. Policy: Optional - Continuing offline.");
+                    break;
+            }
+        }
+
+        public void CheckNetworkConnection()
+        {
+            _isConnected = Application.internetReachability != NetworkReachability.NotReachable;
+
+            if (_isConnected)
+                OnNetworkConnected?.Invoke();
+            else
+                OnNetworkDisconnected?.Invoke();
         }
 
         public void SendRequest<T>(string url, Action<T> onSuccess, Action<string> onError = null) where T : class
@@ -61,18 +152,6 @@ namespace RedMinS
             }
 
             onError?.Invoke($"Network Error: {lastError}");
-        }
-
-        public void CheckNetworkConnection()
-        {
-            if (Application.internetReachability != NetworkReachability.NotReachable)
-            {
-                OnNetworkConnected?.Invoke();
-            }
-            else
-            {
-                OnNetworkDisconnected?.Invoke();
-            }
         }
     }
 }

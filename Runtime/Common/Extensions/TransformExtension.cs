@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RedMinS
 {
-    public static class TranstormExtention
+    public static class TransformExtension
     {
 
         public static void RemoveAllChildren(this Transform parent, ObjectPool pool)

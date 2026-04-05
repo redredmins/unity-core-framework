@@ -21,10 +21,16 @@ namespace RedMinS
 
         public void ClickAbout()
         {
+            CancelInvoke();
             aboutTextBalloon.SetActive(true);
             txtAbout.text = _table.GetString(aboutTextId);
 
             Invoke("HideTextBalloon", 2f);
+        }
+
+        void OnDisable()
+        {
+            CancelInvoke();
         }
 
         void HideTextBalloon()

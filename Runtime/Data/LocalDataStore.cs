@@ -37,5 +37,45 @@ namespace RedMinS
             PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
         }
+
+        // 비동기 API — 로컬이므로 동기 실행 후 즉시 콜백
+        public void SaveAsync<T>(string key, T data, Action onComplete = null, Action<string> onError = null) where T : class
+        {
+            try
+            {
+                Save(key, data);
+                onComplete?.Invoke();
+            }
+            catch (Exception e)
+            {
+                onError?.Invoke(e.Message);
+            }
+        }
+
+        public void LoadAsync<T>(string key, Action<T> onComplete, Action<string> onError = null) where T : class
+        {
+            try
+            {
+                T data = Load<T>(key);
+                onComplete?.Invoke(data);
+            }
+            catch (Exception e)
+            {
+                onError?.Invoke(e.Message);
+            }
+        }
+
+        public void DeleteAsync(string key, Action onComplete = null, Action<string> onError = null)
+        {
+            try
+            {
+                Delete(key);
+                onComplete?.Invoke();
+            }
+            catch (Exception e)
+            {
+                onError?.Invoke(e.Message);
+            }
+        }
     }
 }

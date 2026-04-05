@@ -18,9 +18,15 @@ namespace RedMinS
 
             if (anim != null)
             {
+                CancelInvoke();
                 //anim.SetTrigger("START");
                 Invoke("EffectOff", offTime);
             }
+        }
+
+        void OnDisable()
+        {
+            CancelInvoke();
         }
 
         void EffectOff()
