@@ -44,9 +44,9 @@ namespace RedMinS
         {
             //SupportResolution(canvas);
 
-        #if (!UNITY_EDITOR) && (UNITY_ANDROID || UNITY_IPHONE)
-            EventSystem.current.pixelDragThreshold = (int)(0.5f * Screen.dpi / 2.54f); // 0.5cm
-        #endif
+        //#if (!UNITY_EDITOR) && (UNITY_ANDROID || UNITY_IPHONE)
+            //EventSystem.current.pixelDragThreshold = (int)(0.5f * Screen.dpi / 2.54f); // 0.5cm
+        //#endif
         }
 
         public void OnBackButtonPressed()
