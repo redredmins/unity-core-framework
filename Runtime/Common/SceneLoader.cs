@@ -51,16 +51,9 @@ namespace RedMinS
             yield return ui.IEFadeOut(Color.black);
             ui.ShowLoadingSpinner(true);
 
-            AsyncOperation async = null;
-            SceneManager.UnloadSceneAsync(_curScene);
-            yield return halfSec;
+            yield return SceneManager.UnloadSceneAsync(_curScene);
 
-            async = SceneManager.LoadSceneAsync(toLoad, LoadSceneMode.Additive);
-
-            while (async != null && async.isDone == false)
-            {
-                yield return halfSec;
-            }
+            yield return SceneManager.LoadSceneAsync(toLoad, LoadSceneMode.Additive);
 
             _curScene = toLoad;
             ui.ShowLoadingSpinner(false);

@@ -34,11 +34,14 @@ namespace RedMinS
             volumeOfSound = volume;
             PlayerPrefs.SetFloat(ConfigString.F_SoundVolume, volumeOfSound);
 
-            for (int i = 0; i < soundAudios.Length; ++i)
+            if (soundAudios != null)
             {
-                soundAudios[i].volume = volumeOfSound;
+                for (int i = 0; i < soundAudios.Length; ++i)
+                {
+                    if (soundAudios[i] != null) soundAudios[i].volume = volumeOfSound;
+                }
             }
-            alertAudio.volume = volumeOfSound;
+            if (alertAudio != null) alertAudio.volume = volumeOfSound;
         }
 
         public void PlayEffectSound(string label)
@@ -54,6 +57,12 @@ namespace RedMinS
 
         public void PlayEffectSound(AudioClip clip)
         {
+            if (soundAudios == null || soundAudios.Length == 0)
+            {
+                Debug.LogWarning("[SoundManager] soundAudios not assigned");
+                return;
+            }
+
             AudioSource audio = GetEmptySoundAudio();
             audio.clip = clip;
             audio.Play();
