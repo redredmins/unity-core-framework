@@ -37,9 +37,6 @@ namespace RedMinS
             }
         }
 
-        public bool IsPopupActive => _activePopups.Count > 0;
-
-
         protected void Start()
         {
             //SupportResolution(canvas);

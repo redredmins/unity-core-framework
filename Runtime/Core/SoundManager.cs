@@ -29,6 +29,11 @@ namespace RedMinS
             _clipRegistry[label] = clip;
         }
 
+        public bool HasClip(string label)
+        {
+            return _clipRegistry != null && _clipRegistry.ContainsKey(label);
+        }
+
         public void ChangeSoundVolume(float volume)
         {
             volumeOfSound = volume;

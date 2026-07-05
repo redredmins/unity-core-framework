@@ -38,11 +38,14 @@ namespace RedMinS
 
 
         // 팝업
+        public bool IsPopupActive => _activePopups != null && _activePopups.Count > 0;
+
         public virtual void OnPopup(UIPopup popup)
         {
             _activePopups.Add(popup);
 
-            Core.app.sound.PlayEffectSound("Popup On");
+            if (Core.app.sound.HasClip("Popup On"))
+                Core.app.sound.PlayEffectSound("Popup On");
         }
 
         public virtual void OffPopup(UIPopup popup)
@@ -51,7 +54,8 @@ namespace RedMinS
             {
                 _activePopups.Remove(popup);
 
-                Core.app.sound.PlayEffectSound("Popup Off");
+                if (Core.app.sound.HasClip("Popup Off"))
+                    Core.app.sound.PlayEffectSound("Popup Off");
             }
         }
 
@@ -178,8 +182,8 @@ namespace RedMinS
         {
             while (_toastMessageQueue.Count > 0)
             {
-                // var sound = Core.app.sound;
-                // sound.PlayEffectSound(sound.soundClips.acToast);
+                if (Core.app.sound.HasClip("Toast"))
+                    Core.app.sound.PlayEffectSound("Toast");
                 GameObject toastObj = _pool.CreateObject(uiToast, canvas.transform);
                 UIToast toast = toastObj.GetComponent<UIToast>();
                 toast.SetToast(_toastMessageQueue.Peek());
