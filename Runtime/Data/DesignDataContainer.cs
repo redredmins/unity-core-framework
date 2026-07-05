@@ -23,7 +23,7 @@ namespace RedMinS
     public class DesignDataContainer : MonoBehaviour
     {
         // 프레임워크 공통 스트링 테이블 경로 (Runtime/Resources 아래)
-        const string COMMON_TABLE_PATH = "RedCoreFramework/{0}_common_stringtable";
+        const string COMMON_TABLE_PATH = "RedCoreFramework/uiString_{0}";
 
         [Header("- items")]
         [SerializeField] TextAsset itemTableText;
