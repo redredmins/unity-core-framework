@@ -1,0 +1,7 @@
+{
+  "1001": "OK",
+  "1002": "Cancel",
+  "1003": "Yes",
+  "1004": "No",
+  "9013": "Do you want to quit the game?"
+}

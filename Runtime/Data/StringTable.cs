@@ -37,7 +37,11 @@ namespace RedMinS
                 int uid = int.Parse(pair.Key);
                 string script = pair.Value.ToString();
 
-                stringTable.Add(uid, script);
+                // 이미 있는 키는 유지 (먼저 로드한 테이블 우선 - 공통 테이블 계층화용)
+                if (stringTable.ContainsKey(uid) == false)
+                {
+                    stringTable.Add(uid, script);
+                }
             }
         }
 
