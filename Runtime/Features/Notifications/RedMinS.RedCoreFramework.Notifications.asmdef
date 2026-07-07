@@ -1,0 +1,26 @@
+{
+    "name": "RedMinS.RedCoreFramework.Notifications",
+    "rootNamespace": "RedMinS",
+    "references": [
+        "RedMinS.RedCoreFramework.Runtime",
+        "Unity.Notifications.Android",
+        "Unity.Notifications.iOS"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "RED_NOTIFICATIONS"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.mobile.notifications",
+            "expression": "",
+            "define": "RED_NOTIFICATIONS"
+        }
+    ],
+    "noEngineReferences": false
+}
