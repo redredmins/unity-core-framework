@@ -28,6 +28,10 @@ namespace RedMinS
         [SerializeField] private TimeService _time;
         public TimeService time => GetOrCreateModule<TimeService>(ref _time);
 
+        [Header("Input")]
+        [SerializeField] private InputRouter _input;
+        public InputRouter input => GetOrCreateModule<InputRouter>(ref _input);
+
 
         protected override void OnSingletonAwake()
         {
@@ -46,6 +50,7 @@ namespace RedMinS
             _ = user;
             _ = sound;
             _ = time;
+            _ = input;
             
             Debug.Log("[AppManager] All modules initialized successfully.");
         }
