@@ -1,0 +1,25 @@
+{
+    "name": "RedMinS.RedCoreFramework.Ads",
+    "rootNamespace": "RedMinS",
+    "references": [
+        "RedMinS.RedCoreFramework.Runtime",
+        "GoogleMobileAds"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "GOOGLE_MOBILE_ADS"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.google.ads.mobile",
+            "expression": "",
+            "define": "GOOGLE_MOBILE_ADS"
+        }
+    ],
+    "noEngineReferences": false
+}
