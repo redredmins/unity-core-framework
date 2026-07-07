@@ -1,0 +1,19 @@
+{
+    "name": "RedMinS.RedCoreFramework.GameServices",
+    "rootNamespace": "RedMinS",
+    "references": [
+        "RedMinS.RedCoreFramework.Runtime",
+        "Google.Play.Games"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "RED_GPGS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
