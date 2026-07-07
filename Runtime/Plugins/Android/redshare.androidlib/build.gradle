@@ -1,0 +1,14 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.redmins.core.share'
+    compileSdkVersion 34
+
+    // Unity androidlib는 매니페스트/리소스가 모듈 루트에 있음 (그레이들 기본값은 src/main)
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            res.srcDirs = ['res']
+        }
+    }
+}
