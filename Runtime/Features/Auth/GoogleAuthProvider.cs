@@ -29,14 +29,19 @@ namespace RedMinS
 
         public void SignIn(Action<string> onSuccess, Action<string> onFail)
         {
-            // Google Sign-In SDK로 ID Token을 먼저 획득한 후 이 메서드를 호출하세요.
-            // 아래는 ID Token이 있다고 가정한 Firebase 인증 흐름입니다.
-            //
-            // 실제 구현 시:
-            // 1. Google Sign-In SDK의 GoogleSignIn.DefaultInstance.SignIn() 호출
-            // 2. 성공 콜백에서 idToken을 받아 SignInWithGoogleToken() 호출
-
-            onFail?.Invoke("Google Sign-In SDK를 통해 idToken을 먼저 획득하세요. SignInWithGoogleToken()을 사용하세요.");
+            // Credential Manager(GoogleCredentialService)로 idToken을 획득한 뒤
+            // 기존 Firebase 인증 흐름(SignInWithGoogleToken)을 재사용한다.
+            GoogleCredentialService.SignIn(_webClientId,
+                (email, idToken) =>
+                {
+                    if (string.IsNullOrEmpty(idToken))
+                    {
+                        onFail?.Invoke("Google credential returned empty idToken.");
+                        return;
+                    }
+                    SignInWithGoogleToken(idToken, onSuccess, onFail);
+                },
+                () => onFail?.Invoke("Google credential sign-in failed."));
         }
 
         /// <summary>
