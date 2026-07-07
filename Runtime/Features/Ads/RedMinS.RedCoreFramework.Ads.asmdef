@@ -2,8 +2,7 @@
     "name": "RedMinS.RedCoreFramework.Ads",
     "rootNamespace": "RedMinS",
     "references": [
-        "RedMinS.RedCoreFramework.Runtime",
-        "GoogleMobileAds"
+        "RedMinS.RedCoreFramework.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

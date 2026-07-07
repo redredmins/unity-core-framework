@@ -16,6 +16,9 @@ namespace RedMinS
         public static void SignIn(string webClientId, Action<string, string> onSuccess, Action onFail)
         {
 #if UNITY_EDITOR
+            // 에디터 스텁: idToken은 의도적으로 빈 문자열이다. 실제 Google idToken은 기기에서만
+            // 발급되므로 에디터에서 Firebase Google 로그인(GoogleAuthProvider)은 테스트할 수 없고,
+            // idToken이 필요 없는 Legacy 경로(LegacyGoogleIdProvider)만 이메일로 동작한다.
             if (onSuccess != null) onSuccess("tester1@dev.local", "");
 #elif UNITY_ANDROID
             var go = new GameObject(CallbackObject);

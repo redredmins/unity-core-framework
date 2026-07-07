@@ -8,7 +8,7 @@ using UnityEngine.Android;
 using Unity.Notifications.iOS;
 #endif
 
-// 로컬 푸시 알림. Muug NetworkManager의 알림 부분만 발췌 포팅.
+// 로컬 푸시 알림 (Android/iOS).
 // 게임 고유 요소(채널ID/문구)는 제거하고 Initialize 파라미터로 역전. 에디터에서는 로그 스텁.
 namespace RedMinS
 {

@@ -8,6 +8,10 @@ using GooglePlayGames.BasicApi;
 // 업적/리더보드. Android는 Google Play Games plugin v2 사용.
 // 게임 고유 요소(애널리틱스/자동 로그인 시점)는 제거하고 명시적 Authenticate로 역전.
 // 에디터에서는 Debug.Log 스텁. (iOS는 별도 단계 — DllImport 미포함)
+//
+// [활성화 조건] GPGS v2는 UPM이 아닌 unitypackage 설치라 versionDefines로 자동 심볼 정의가 불가능하다.
+// 따라서 이 어셈블리(defineConstraints: RED_GPGS)는 게임이 Player Settings >
+// Scripting Define Symbols에 RED_GPGS를 수동으로 추가해야 컴파일된다.
 namespace RedMinS
 {
     public class GameServicesManager : SingletonMonobehaviour<GameServicesManager>
