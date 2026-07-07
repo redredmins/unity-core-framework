@@ -1,0 +1,25 @@
+{
+    "name": "RedMinS.RedCoreFramework.Purchasing",
+    "rootNamespace": "RedMinS",
+    "references": [
+        "RedMinS.RedCoreFramework.Runtime",
+        "Unity.Purchasing"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "RED_IAP"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.purchasing",
+            "expression": "",
+            "define": "RED_IAP"
+        }
+    ],
+    "noEngineReferences": false
+}
