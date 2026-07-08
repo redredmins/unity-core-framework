@@ -26,6 +26,8 @@ namespace RedMinS
 
         public void RegisterClip(string label, AudioClip clip)
         {
+            // 등록 호출자가 이 컴포넌트의 Awake보다 먼저 실행될 수 있어(Awake 순서 비보장) 지연 생성.
+            if (_clipRegistry == null) _clipRegistry = new Dictionary<string, AudioClip>();
             _clipRegistry[label] = clip;
         }
 
