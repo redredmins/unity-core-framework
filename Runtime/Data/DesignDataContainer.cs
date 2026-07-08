@@ -10,6 +10,10 @@ namespace RedMinS
         Korean = 1,
         English,
         Japanese,
+        ChineseTW,
+        Italian,
+        Russian,
+        German,
         MAX
     }
 
@@ -129,6 +133,18 @@ namespace RedMinS
                 case SystemLanguage.Japanese:
                     curLang = Language.Japanese;
                     break;
+                case SystemLanguage.ChineseTraditional:
+                    curLang = Language.ChineseTW;
+                    break;
+                case SystemLanguage.Italian:
+                    curLang = Language.Italian;
+                    break;
+                case SystemLanguage.Russian:
+                    curLang = Language.Russian;
+                    break;
+                case SystemLanguage.German:
+                    curLang = Language.German;
+                    break;
 
                 default:
                     curLang = Language.English;
@@ -155,6 +171,10 @@ namespace RedMinS
                 case Language.Korean: return "kr";
                 case Language.English: return "en";
                 case Language.Japanese: return "jp";
+                case Language.ChineseTW: return "tw";
+                case Language.Italian: return "it";
+                case Language.Russian: return "ru";
+                case Language.German: return "de";
 
                 default: return "en";
             }
