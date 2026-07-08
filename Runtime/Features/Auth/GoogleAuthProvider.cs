@@ -52,7 +52,8 @@ namespace RedMinS
         {
             Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(idToken, null);
 
-            FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
+            // AuthResult를 반환하는 오버로드 사용 (SignInWithCredentialAsync는 Task<FirebaseUser>라 .User 접근 불가)
+            FirebaseAuth.DefaultInstance.SignInAndRetrieveDataWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCanceled)
                 {
