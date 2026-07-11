@@ -17,6 +17,7 @@ namespace RedMinS
         public string interstitialId;
         public string rewardedId;
         public float bannerRefreshSeconds = 60f;
+        public bool bannerAtTop = false; // 배너 위치 — 게임별 주입 (SulkyCacti=상단, Muug=하단)
     }
 
     public class AdsService : SingletonMonobehaviour<AdsService>
@@ -87,7 +88,8 @@ namespace RedMinS
         {
             if (bannerView == null)
             {
-                bannerView = new BannerView(config.bannerId, AdSize.Banner, AdPosition.Bottom);
+                bannerView = new BannerView(config.bannerId, AdSize.Banner,
+                    config.bannerAtTop ? AdPosition.Top : AdPosition.Bottom);
             }
             bannerView.LoadAd(new AdRequest());
             bannerView.Show();
